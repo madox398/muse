@@ -5,6 +5,7 @@ import container from './inversify.config';
 import {TYPES} from './types';
 import Bot from './bot';
 import {sequelize} from './utils/db';
+import ctray from 'ctray';
 
 let bot = container.get<Bot>(TYPES.Bot);
 const spotify = container.get<Spotify>(TYPES.Lib.Spotify);
@@ -16,6 +17,18 @@ const refreshSpotifyToken = async () => {
 
   return auth.body.expires_in;
 };
+
+(async () => {
+  const tray = new ctray(path.resolve('favicon.ico'), [
+    {
+      text: 'Quit',
+      callback: () => {
+        process.exit(0);
+      }
+    }
+  ]);
+  tray.start();
+})();
 
 (async () => {
   const spotifyRefreshIntervalSeconds = await refreshSpotifyToken();
