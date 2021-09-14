@@ -53,9 +53,8 @@ export default class {
 
   disconnect(breakConnection = true): void {
     if (this.voiceConnection) {
-      this.clear();
       if (this.status === STATUS.PLAYING) {
-        this.removeCurrent();
+        this.pause();
       }
 
       if (breakConnection) {
