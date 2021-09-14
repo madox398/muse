@@ -19,4 +19,8 @@ export default class Settings extends Model<Settings> {
   @Default(false)
   @Column
   stayAfterQueueEnds!: boolean;
+
+  @Default('base')
+  @Column
+  locale!: string;
 }

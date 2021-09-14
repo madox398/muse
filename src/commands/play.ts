@@ -9,6 +9,7 @@ import LoadingMessage from '../utils/loading-message';
 import errorMsg from '../utils/error-msg';
 import Command from '.';
 import GetSongs from '../services/get-songs';
+import {getLocale} from '../locale';
 
 @injectable()
 export default class implements Command {
@@ -37,6 +38,7 @@ export default class implements Command {
   }
 
   public async execute(msg: Message, args: string []): Promise<void> {
+    let locale = await getLocale(msg.guild!.id);
     const [targetVoiceChannel] = getMostPopularVoiceChannel(msg.guild!);
 
     const res = new LoadingMessage(msg.channel as TextChannel);
@@ -135,17 +137,11 @@ export default class implements Command {
 
     newSongs.forEach(song => player.add(song, {immediate: addToFrontOfQueue}));
 
-    const firstSong = newSongs[0];
-
     if (extraMsg !== '') {
       extraMsg = ` (${extraMsg})`;
     }
 
-    if (newSongs.length === 1) {
-      await res.stop(`u betcha, **${firstSong.title}** added to the${addToFrontOfQueue ? ' front of the' : ''} queue${extraMsg}`);
-    } else {
-      await res.stop(`u betcha, **${firstSong.title}** and ${newSongs.length - 1} other songs were added to the queue${extraMsg}`);
-    }
+    await res.stop(locale.addedSongsMessage(newSongs, addToFrontOfQueue, extraMsg));
 
     if (player.voiceConnection === null) {
       await player.connect(targetVoiceChannel);
