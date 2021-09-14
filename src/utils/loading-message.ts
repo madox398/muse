@@ -1,5 +1,6 @@
 import {TextChannel, Message, MessageReaction} from 'discord.js';
 import delay from 'delay';
+import {getLocale} from '../locale';
 
 const INITAL_DELAY = 500;
 const PERIOD = 500;
@@ -7,18 +8,24 @@ const PERIOD = 500;
 export default class {
   public isStopped = true;
   private readonly channel: TextChannel;
-  private readonly text: string;
+  private text: string;
   private msg!: Message;
 
-  constructor(channel: TextChannel, text = 'cows! count \'em') {
+  constructor(channel: TextChannel, text = '') {
     this.channel = channel;
     this.text = text;
   }
 
   async start(): Promise<void> {
+    let locale = await getLocale(this.channel.guild.id);
+
+    if (!this.text) {
+      this.text = locale.loadingMessage;
+    }
+
     this.msg = await this.channel.send(this.text);
 
-    const icons = ['🐮', '🐴', '🐄'];
+    const icons = locale.loadingMessageIcons;
 
     const reactions: MessageReaction[] = [];
 
@@ -59,7 +66,12 @@ export default class {
     })();
   }
 
-  async stop(str = 'u betcha'): Promise<Message> {
+  async stop(str = ''): Promise<Message> {
+    if (!str) {
+      let locale = await getLocale(this.channel.guild.id);
+      str = locale.doneMessage;
+    }
+
     const wasAlreadyStopped = this.isStopped;
 
     this.isStopped = true;

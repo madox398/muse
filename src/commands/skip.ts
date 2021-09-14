@@ -5,6 +5,7 @@ import PlayerManager from '../managers/player';
 import Command from '.';
 import LoadingMessage from '../utils/loading-message';
 import errorMsg from '../utils/error-msg';
+import {getLocale} from '../locale';
 
 @injectable()
 export default class implements Command {
@@ -24,6 +25,7 @@ export default class implements Command {
   }
 
   public async execute(msg: Message, args: string []): Promise<void> {
+    let locale = await getLocale(msg.guild!.id);
     let numToSkip = 1;
 
     if (args.length === 1) {
@@ -40,7 +42,7 @@ export default class implements Command {
       await loader.start();
       await player.forward(numToSkip);
 
-      await loader.stop('keep \'er movin\'');
+      await loader.stop(locale.skipMessage(numToSkip));
     } catch (_: unknown) {
       await loader.stop(errorMsg('no song to skip to'));
     }
