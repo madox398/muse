@@ -9,9 +9,9 @@ export default class implements Command {
   public name = 'shortcuts';
   public aliases = [];
   public examples = [
-    ['shortcuts', 'show all shortcuts'],
-    ['shortcuts set s skip', 'aliases `s` to `skip`'],
-    ['shortcuts set party play https://www.youtube.com/watch?v=zK6oOJ1wz8k', 'aliases `party` to a specific play command'],
+    ['shortcuts', 'pokaż wszystkie  skróty'],
+    ['shortcuts set s skip', 'ustaw `s` do `skip`'],
+    ['shortcuts set party play https://www.youtube.com/watch?v=zK6oOJ1wz8k', 'ustaw hasło `party` aby uruchomić konrkretne polecenie play'],
     ['shortcuts delete party', 'removes the `party` shortcut']
   ];
 
@@ -21,7 +21,7 @@ export default class implements Command {
       const shortcuts = await Shortcut.findAll({where: {guildId: msg.guild!.id}});
 
       if (shortcuts.length === 0) {
-        await msg.channel.send('no shortcuts exist');
+        await msg.channel.send('nie istnieją żadne skróty');
         return;
       }
 
