@@ -49,7 +49,7 @@ export default class implements Command {
 
     if (args.length === 0) {
       if (player.status === STATUS.PLAYING) {
-        await res.stop(errorMsg('already playing, give me a song name'));
+        await res.stop(errorMsg('aktualnie odtawarza, podaj mi nazwę piosenki'));
         return;
       }
 
@@ -142,9 +142,9 @@ export default class implements Command {
     }
 
     if (newSongs.length === 1) {
-      await res.stop(`u betcha, **${firstSong.title}** added to the${addToFrontOfQueue ? ' na początku' : ''} queue${extraMsg}`);
+      await res.stop(`**${firstSong.title}** dodano ${addToFrontOfQueue ? ' na początku' : ''} kolejki${extraMsg}`);
     } else {
-      await res.stop(`u betcha, **${firstSong.title}** and ${newSongs.length - 1} other songs were added to the queue${extraMsg}`);
+      await res.stop(`**${firstSong.title}** oraz ${newSongs.length - 1} innych piosenek dodano do kolejki${extraMsg}`);
     }
 
     if (queueOldSize === 0 && !wasPlayingSong) {
