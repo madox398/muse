@@ -12,7 +12,7 @@ export default class implements Command {
     ['shortcuts', 'pokaż wszystkie  skróty'],
     ['shortcuts set s skip', 'ustaw `s` do `skip`'],
     ['shortcuts set party play https://www.youtube.com/watch?v=zK6oOJ1wz8k', 'ustaw hasło `party` aby uruchomić konrkretne polecenie play'],
-    ['shortcuts delete party', 'removes the `party` shortcut']
+    ['shortcuts delete party', 'usuwa skrót `party`']
   ];
 
   public async execute(msg: Message, args: string []): Promise<void> {
