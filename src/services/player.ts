@@ -69,17 +69,17 @@ export default class {
     this.status = STATUS.PAUSED;
 
     if (this.voiceConnection === null) {
-      throw new Error('Not connected to a voice channel.');
+      throw new Error('Nie jesteś podłączony do kanału głosowego.');
     }
 
     const currentSong = this.getCurrent();
 
     if (!currentSong) {
-      throw new Error('No song currently playing');
+      throw new Error('Obecnie nie jest odtwarzany żaden utwór');
     }
 
     if (positionSeconds > currentSong.length) {
-      throw new Error('Seek position is outside the range of the song.');
+      throw new Error('Pozycja szukania jest poza utworem.');
     }
 
     const stream = await this.getStream(currentSong.url, {seek: positionSeconds});
@@ -101,13 +101,13 @@ export default class {
 
   async play(): Promise<void> {
     if (this.voiceConnection === null) {
-      throw new Error('Not connected to a voice channel.');
+      throw new Error('Nie jesteś podłączony do kanału głosowego.');
     }
 
     const currentSong = this.getCurrent();
 
     if (!currentSong) {
-      throw new Error('Queue empty.');
+      throw new Error('pusta kolejka.');
     }
 
     // Resume from paused state
@@ -149,7 +149,7 @@ export default class {
 
   pause(): void {
     if (this.status !== STATUS.PLAYING) {
-      throw new Error('Not currently playing.');
+      throw new Error('Obecnie nic nie jest grane.');
     }
 
     this.status = STATUS.PAUSED;
@@ -183,7 +183,7 @@ export default class {
       this.positionInSeconds = 0;
       this.stopTrackingPosition();
     } else {
-      throw new Error('No songs in queue to forward to.');
+      throw new Error('Brak utworów w kolejce do przekierowania.');
     }
   }
 
@@ -197,7 +197,7 @@ export default class {
         await this.play();
       }
     } else {
-      throw new Error('No songs in queue to go back to.');
+      throw new Error('Brak utworów w kolejce, do których można by wrócić.');
     }
   }
 
