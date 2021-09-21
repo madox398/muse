@@ -46,7 +46,7 @@ export default class implements Command {
 
         await Settings.update({prefix: newPrefix}, {where: {guildId: msg.guild!.id}});
 
-        await msg.channel.send(`👍 prefix updated to \`${newPrefix}\``);
+        await msg.channel.send(`👍 prefix zaktualizowany na \`${newPrefix}\``);
         break;
       }
 
