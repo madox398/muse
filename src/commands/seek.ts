@@ -12,9 +12,9 @@ export default class implements Command {
   public name = 'seek';
   public aliases = [];
   public examples = [
-    ['seek 10', 'seeks to 10 seconds from beginning of song'],
-    ['seek 1:30', 'seeks to 1 minute and 30 seconds from beginning of song'],
-    ['seek 1:00:00', 'seeks to 1 hour from beginning of song']
+    ['seek 10', 'przewiń do 10 sekundy obecnie odtwarzanego utworu'],
+    ['seek 1:30', 'przewiń do 1 minuty i 30 sekund obecnie odtwarzanego utworu'],
+    ['seek 1:00:00', 'przewiń do 1 godziny obecnie odtwarzanego utworu']
   ];
 
   public requiresVC = true;
@@ -31,12 +31,12 @@ export default class implements Command {
     const currentSong = player.getCurrent();
 
     if (!currentSong) {
-      await msg.channel.send(errorMsg('nothing is playing'));
+      await msg.channel.send(errorMsg('nic nie jest odtwarzane'));
       return;
     }
 
     if (currentSong.isLive) {
-      await msg.channel.send(errorMsg('can\'t seek in a livestream'));
+      await msg.channel.send(errorMsg('nie można przewinąć transmisji na żywo'));
       return;
     }
 
@@ -51,7 +51,7 @@ export default class implements Command {
     }
 
     if (seekTime > currentSong.length) {
-      await msg.channel.send(errorMsg('can\'t seek past the end of the song'));
+      await msg.channel.send(errorMsg('nie może szukać dalej niż do końca piosenki'));
       return;
     }
 
