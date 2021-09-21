@@ -9,8 +9,8 @@ export default class implements Command {
   public name = 'config';
   public aliases = [];
   public examples = [
-    ['config prefix !', 'set the prefix to !'],
-    ['config channel music-commands', 'bind the bot to the music-commands channel']
+    ['config prefix !', 'ustawia prefix na !'],
+    ['config channel music-commands', 'powiązanie bota z kanałem `music-commands`']
   ];
 
   public async execute(msg: Message, args: string []): Promise<void> {
@@ -31,12 +31,12 @@ export default class implements Command {
     const setting = args[0];
 
     if (args.length !== 2) {
-      await msg.channel.send(errorMsg('incorrect number of arguments'));
+      await msg.channel.send(errorMsg('nieprawidłowa liczba argumentów'));
       return;
     }
 
     if (msg.author.id !== msg.guild!.owner!.id) {
-      await msg.channel.send(errorMsg('not authorized'));
+      await msg.channel.send(errorMsg('nie Ty jesteś właścicielem serwera'));
       return;
     }
 
@@ -63,18 +63,18 @@ export default class implements Command {
           await Settings.update({channel: channel.id}, {where: {guildId: msg.guild!.id}});
 
           await Promise.all([
-            (channel as TextChannel).send('hey apparently I\'m bound to this channel now'),
+            (channel as TextChannel).send('Teraz tutaj nasłuchuję komend'),
             msg.react('👍')
           ]);
         } else {
-          await msg.channel.send(errorMsg('either that channel doesn\'t exist or you want me to become sentient and listen to a voice channel'));
+          await msg.channel.send(errorMsg('albo ten kanał nie istnieje, albo chcesz, żebym stał się czuły i słuchał kanału głosowego.'));
         }
 
         break;
       }
 
       default:
-        await msg.channel.send(errorMsg('I\'ve never met this setting in my life'));
+        await msg.channel.send(errorMsg('Nigdy w życiu nie spotkałem się z takim ustawieniem.'));
     }
   }
 }
