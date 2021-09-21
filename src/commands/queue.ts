@@ -16,8 +16,8 @@ export default class implements Command {
   public name = 'queue';
   public aliases = ['q'];
   public examples = [
-    ['queue', 'shows current queue'],
-    ['queue 2', 'shows second page of queue']
+    ['queue', 'pokaż obecną kolejkę'],
+    ['queue 2', 'pokaż drugą stronę kolejki']
   ];
 
   private readonly playerManager: PlayerManager;
@@ -38,7 +38,7 @@ export default class implements Command {
       const maxQueuePage = Math.ceil((queueSize + 1) / PAGE_SIZE);
 
       if (queuePage > maxQueuePage) {
-        await msg.channel.send(errorMsg('the queue isn\'t that big'));
+        await msg.channel.send(errorMsg('kolejka nie jest aż tak duża'));
         return;
       }
 
@@ -51,9 +51,9 @@ export default class implements Command {
       description += ' ';
       description += getProgressBar(20, player.getPosition() / currentlyPlaying.length);
       description += ' ';
-      description += `\`[${prettyTime(player.getPosition())}/${currentlyPlaying.isLive ? 'live' : prettyTime(currentlyPlaying.length)}]\``;
+      description += `\`[${prettyTime(player.getPosition())}/${currentlyPlaying.isLive ? ' na' : prettyTime(currentlyPlaying.length)}]\``;
       description += ' 🔉';
-      description += player.isQueueEmpty() ? '' : '\n\n**Next up:**';
+      description += player.isQueueEmpty() ? '' : '\n\n**Nastepne:**';
 
       embed.setDescription(description);
 
