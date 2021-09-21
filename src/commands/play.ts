@@ -16,14 +16,14 @@ export default class implements Command {
   public aliases = ['p'];
   public examples = [
     ['play', 'resume paused playback'],
-    ['play https://www.youtube.com/watch?v=dQw4w9WgXcQ', 'plays a YouTube video'],
-    ['play cool music', 'plays the first search result for "cool music" from YouTube'],
-    ['play https://www.youtube.com/watch?list=PLi9drqWffJ9FWBo7ZVOiaVy0UQQEm4IbP', 'adds the playlist to the queue'],
-    ['play https://open.spotify.com/track/3ebXMykcMXOcLeJ9xZ17XH?si=tioqSuyMRBWxhThhAW51Ig', 'plays a song from Spotify'],
-    ['play https://open.spotify.com/album/5dv1oLETxdsYOkS2Sic00z?si=bDa7PaloRx6bMIfKdnvYQw', 'adds all songs from album to the queue'],
-    ['play https://open.spotify.com/playlist/37i9dQZF1DX94qaYRnkufr?si=r2fOVL_QQjGxFM5MWb84Xw', 'adds all songs from playlist to the queue'],
-    ['play cool music immediate', 'adds the first search result for "cool music" to the front of the queue'],
-    ['play cool music i', 'adds the first search result for "cool music" to the front of the queue']
+    ['play https://www.youtube.com/watch?v=dQw4w9WgXcQ', 'odtwarza muzykę z YouTube'],
+    ['play cool music', 'odtwarza pierwszy wynik wyszukiwania dla "cool music" z YouTube'],
+    ['play https://www.youtube.com/watch?list=PLi9drqWffJ9FWBo7ZVOiaVy0UQQEm4IbP', 'dodaje playlistę do kolejki'],
+    ['play https://open.spotify.com/track/3ebXMykcMXOcLeJ9xZ17XH?si=tioqSuyMRBWxhThhAW51Ig', 'odtwarza piosenkę z Spotify'],
+    ['play https://open.spotify.com/album/5dv1oLETxdsYOkS2Sic00z?si=bDa7PaloRx6bMIfKdnvYQw', 'dodaje wszystkie piosenki z albumu do kolejki'],
+    ['play https://open.spotify.com/playlist/37i9dQZF1DX94qaYRnkufr?si=r2fOVL_QQjGxFM5MWb84Xw', 'dodaje wszystkie piosenki z playlisty do kolejki'],
+    ['play cool music immediate', 'dodaje pierwszy wynik wyszukiwania dla "cool music" z YouTube do kolejki'],
+    ['play cool music i', 'dodaje pierwszy wynik wyszukiwania dla "cool music" z YouTube do kolejki']
   ];
 
   public requiresVC = true;
@@ -55,14 +55,14 @@ export default class implements Command {
 
       // Must be resuming play
       if (!wasPlayingSong) {
-        await res.stop(errorMsg('nothing to play'));
+        await res.stop(errorMsg('nic do odtworzenia'));
         return;
       }
 
       await player.connect(targetVoiceChannel);
       await player.play();
 
-      await res.stop('the stop-and-go light is now green');
+      await res.stop('zapauzowano');
       return;
     }
 
@@ -89,7 +89,7 @@ export default class implements Command {
           if (song) {
             newSongs.push(song);
           } else {
-            await res.stop(errorMsg('that doesn\'t exist'));
+            await res.stop(errorMsg('coś poszło nie tak'));
             return;
           }
         }
@@ -97,18 +97,18 @@ export default class implements Command {
         const [convertedSongs, nSongsNotFound, totalSongs] = await this.getSongs.spotifySource(args[0]);
 
         if (totalSongs > 50) {
-          extraMsg = 'a random sample of 50 songs was taken';
+          extraMsg = 'wybrano losowo 50 utworów';
         }
 
         if (totalSongs > 50 && nSongsNotFound !== 0) {
-          extraMsg += ' and ';
+          extraMsg += ' oraz ';
         }
 
         if (nSongsNotFound !== 0) {
           if (nSongsNotFound === 1) {
-            extraMsg += '1 song was not found';
+            extraMsg += 'nie znaleziono';
           } else {
-            extraMsg += `${nSongsNotFound.toString()} songs were not found`;
+            extraMsg += `${nSongsNotFound.toString()} nie znaleziono`;
           }
         }
 
@@ -123,13 +123,13 @@ export default class implements Command {
       if (song) {
         newSongs.push(song);
       } else {
-        await res.stop(errorMsg('that doesn\'t exist'));
+        await res.stop(errorMsg('nie istnieje'));
         return;
       }
     }
 
     if (newSongs.length === 0) {
-      await res.stop(errorMsg('no songs found'));
+      await res.stop(errorMsg('nie znaleziono muzyki'));
       return;
     }
 
@@ -142,7 +142,7 @@ export default class implements Command {
     }
 
     if (newSongs.length === 1) {
-      await res.stop(`u betcha, **${firstSong.title}** added to the${addToFrontOfQueue ? ' front of the' : ''} queue${extraMsg}`);
+      await res.stop(`u betcha, **${firstSong.title}** added to the${addToFrontOfQueue ? ' na początku' : ''} queue${extraMsg}`);
     } else {
       await res.stop(`u betcha, **${firstSong.title}** and ${newSongs.length - 1} other songs were added to the queue${extraMsg}`);
     }
