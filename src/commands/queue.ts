@@ -76,7 +76,7 @@ export default class implements Command {
 
       await msg.channel.send(embed);
     } else {
-      await msg.channel.send('queue empty');
+      await msg.channel.send('kolejka jest pusta');
     }
   }
 }
