@@ -56,15 +56,15 @@ export default class implements Command {
 
           if (shortcut) {
             if (shortcut.authorId !== msg.author.id && msg.author.id !== msg.guild!.owner!.id) {
-              await msg.channel.send(errorMsg('you do\'nt have permission to do that'));
+              await msg.channel.send(errorMsg('nie masz uprawnień aby to zrobić'));
               return;
             }
 
             await shortcut.update(newShortcut);
-            await msg.channel.send('shortcut updated');
+            await msg.channel.send('zaktualizowano skróty');
           } else {
             await Shortcut.create(newShortcut);
-            await msg.channel.send('shortcut created');
+            await msg.channel.send('utworzono skrót');
           }
 
           break;
@@ -75,25 +75,25 @@ export default class implements Command {
           const shortcut = await Shortcut.findOne({where: {guildId: msg.guild!.id, shortcut: shortcutName}});
 
           if (!shortcut) {
-            await msg.channel.send(errorMsg('shortcut doesn\'t exist'));
+            await msg.channel.send(errorMsg('skrót nie istnieje'));
             return;
           }
 
           // Check permissions
           if (shortcut.authorId !== msg.author.id && msg.author.id !== msg.guild!.owner!.id) {
-            await msg.channel.send(errorMsg('you don\'t have permission to do that'));
+            await msg.channel.send(errorMsg('nie masz uprawnień aby to zrobić'));
             return;
           }
 
           await shortcut.destroy();
 
-          await msg.channel.send('shortcut deleted');
+          await msg.channel.send('usunięto skrót');
 
           break;
         }
 
         default: {
-          await msg.channel.send(errorMsg('unknown command'));
+          await msg.channel.send(errorMsg('nieznane polecenie'));
         }
       }
     }
